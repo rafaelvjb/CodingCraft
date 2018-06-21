@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Net;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web.Mvc;
 using CodingCraftHOMod1Ex1EF.Models;
 
@@ -42,10 +43,13 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
         {
             if (ModelState.IsValid)
             {
-                cidade.CidadeId = Guid.NewGuid();
-                db.Cidades.Add(cidade);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    cidade.CidadeId = Guid.NewGuid();
+                    db.Cidades.Add(cidade);
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(cidade);

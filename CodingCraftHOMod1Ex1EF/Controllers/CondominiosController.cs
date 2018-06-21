@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web.Mvc;
 using CodingCraftHOMod1Ex1EF.Models;
 using WebGrease.Css.Extensions;
@@ -83,9 +84,14 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Condominios.Add(condominio);
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    db.Condominios.Add(condominio);
 
-                await db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
+                    scope.Complete();
+                }
+                
                 return RedirectToAction("Index");
             }
 
@@ -114,19 +120,34 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
         {
             if (ModelState.IsValid)
             {
-                //condominio.CondominioId = Guid.NewGuid();
-                condominio.CondominioTelefones.ForEach(t=>
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    if (string.IsNullOrEmpty(t.CondominioId.ToString()) || t.CondominioId == default(Guid) )
+                    //condominio.CondominioId = Guid.NewGuid();
+                    condominio.CondominioTelefones.ForEach(t =>
                     {
-                        t.CondominioId = condominio.CondominioId;
-                        db.Entry(t).State = EntityState.Added;
-                    }
-                });
-                db.Entry(condominio).State = EntityState.Modified;
-                
+                        if (string.IsNullOrEmpty(t.CondominioId.ToString()) || t.CondominioId == default(Guid))
+                        {
+                            t.CondominioId = condominio.CondominioId;
+                            db.Entry(t).State = EntityState.Added;
+                        }
+                        else
+                        {
+                            if (t.ItemDeleted)
+                            {
+                                db.Entry(t).State = EntityState.Deleted;
+                            }
+                            else
+                            {
+                                db.Entry(t).State = EntityState.Modified;
+                            }
+                        }
+                    });
+                    db.Entry(condominio).State = EntityState.Modified;
                     
-                await db.SaveChangesAsync();
+                    await db.SaveChangesAsync();
+                    scope.Complete();
+                }
+
                 return RedirectToAction("Index");
             }
 
@@ -149,9 +170,15 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            var condominio = await db.Condominios.FindAsync(id);
-            db.Condominios.Remove(condominio);
-            await db.SaveChangesAsync();
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                var condominio = await db.Condominios.FindAsync(id);
+
+                db.Condominios.Remove(condominio);
+                await db.SaveChangesAsync();
+                scope.Complete();
+            }
+
             return RedirectToAction("Index");
         }
 
