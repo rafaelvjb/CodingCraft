@@ -1,0 +1,75 @@
+﻿@using CodingCraftHOMod1Ex1EF.Models
+@using Microsoft.Ajax.Utilities
+@model IEnumerable<Condominio>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+
+@Html.Partial("_Filtros", new Condominio())
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Cidade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RazaoSocial)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cnpj)
+        </th>
+        <th>
+            <span>Telefones</span>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cidade.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Descricao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RazaoSocial)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cnpj)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CondominioTelefones
+                                              //  .Aggregate("",(s, telefone) => $"{s}, {telefone.ToString()}") 
+                )
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.CondominioId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.CondominioId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.CondominioId })
+        </td>
+    </tr>
+    }
+
+</table>

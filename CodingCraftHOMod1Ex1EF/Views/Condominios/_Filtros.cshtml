@@ -1,0 +1,38 @@
+﻿@using CodingCraftHOMod1Ex1EF.Models
+@model Condominio
+
+
+@using (Html.BeginForm(null, null, FormMethod.Get))
+{
+
+    <fieldset class="form-control">
+        <div class="row">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.CidadeId, "CidadeId", htmlAttributes: new { @class = "control-label " })
+                @Html.DropDownList("CidadeId", null, " ", htmlAttributes: new { @class = "form-control " })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label " })
+                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.RazaoSocial, htmlAttributes: new { @class = "control-label " })
+                @Html.EditorFor(model => model.RazaoSocial, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-6">
+                @Html.LabelFor(model => model.Cnpj, htmlAttributes: new { @class = "control-label " })
+                @Html.EditorFor(model => model.Cnpj, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Filtrar" class="btn btn-default" />
+            </div>
+        </div>
+        <hr/>
+    </fieldset>
+}

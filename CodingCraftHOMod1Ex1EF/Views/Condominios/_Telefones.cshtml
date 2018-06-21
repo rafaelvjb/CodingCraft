@@ -1,0 +1,24 @@
+﻿@model IEnumerable<CodingCraftHOMod1Ex1EF.Models.CondominioTelefone>
+
+<div class="actions">
+    <a class="btn btn-default btn-sm" id="adicionar-novo-telefone">
+        Adicionar Novo Telefone
+    </a>
+    <script type="text/javascript">
+                $("#adicionar-novo-telefone").click(function () {
+                    $.get('/Condominios/NovaLinhaTelefone', function (template) {
+                        $("#area-telefones").append(template);
+                    });
+                });
+    </script>
+</div>
+
+<div id="area-telefones">
+    @if (Model != null)
+    {
+        foreach (var telefone in Model)
+        {
+            @Html.Partial("_LinhaTelefone", telefone);
+        }
+    }
+</div>

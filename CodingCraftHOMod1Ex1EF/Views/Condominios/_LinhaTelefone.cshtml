@@ -1,0 +1,45 @@
+﻿@using CodingCraftHOMod1Ex1EF.Models
+@model CondominioTelefone
+
+@using (Html.BeginCollectionItem(nameof(Condominio.CondominioTelefones)))
+{
+<div>
+    @Html.HiddenFor(model => model.CondominioTelefoneId)
+    @Html.HiddenFor(model => model.CondominioId)
+
+    <div class="row">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.Ddd, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Ddd, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Ddd, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+            @Html.LabelFor(model => model.Numero, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Numero, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Numero, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.Referencia, htmlAttributes: new { @class = "control-label" })
+            @Html.EditorFor(model => model.Referencia, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Referencia, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="col-md-2">
+        <a class="btn red" onclick="$(this).parent().parent().remove();">Excluir</a>
+    </div>
+
+    @Html.HiddenFor(m => m.ItemDeleted, new { data_is_deleted = "false" })
+</div>
+
+    <script type="text/javascript">
+        function removeTemp() {
+            $(this).parent().parent().remove();
+        }
+    </script>
+}
