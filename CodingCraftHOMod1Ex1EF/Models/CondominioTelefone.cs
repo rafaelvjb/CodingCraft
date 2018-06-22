@@ -39,6 +39,7 @@ namespace CodingCraftHOMod1Ex1EF.Models
         public virtual Condominio Condominio { get; set; }
 
         //Propriedade para tratamento de lista BCI
+        [NotMapped]
         public bool ItemDeleted{ get; set; }
 
 

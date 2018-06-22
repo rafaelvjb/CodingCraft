@@ -29,17 +29,19 @@
             @Html.ValidationMessageFor(model => model.Referencia, "", new { @class = "text-danger" })
         </div>
     </div>
-
+    
     <div class="col-md-2">
-        <a class="btn red" onclick="$(this).parent().parent().remove();">Excluir</a>
+        <a class="btn red" onclick="removeTemp(this);">Excluir</a>
     </div>
 
     @Html.HiddenFor(m => m.ItemDeleted, new { data_is_deleted = "false" })
 </div>
 
     <script type="text/javascript">
-        function removeTemp() {
-            $(this).parent().parent().remove();
+        function removeTemp(element) {
+            debugger;
+            $(element).parent().parent().hide();
+            $(element).parent().parent().find("input[name$='ItemDeleted']").val(true);
         }
     </script>
 }
