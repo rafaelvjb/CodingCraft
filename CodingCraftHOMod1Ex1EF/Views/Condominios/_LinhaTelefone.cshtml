@@ -40,8 +40,9 @@
     <script type="text/javascript">
         function removeTemp(element) {
             debugger;
-            $(element).parent().parent().hide();
             $(element).parent().parent().find("input[name$='ItemDeleted']").val(true);
+            //$(element).parent().parent().hide();
+            $(element).parent().parent().remove();
         }
     </script>
 }

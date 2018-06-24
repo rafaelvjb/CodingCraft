@@ -43,13 +43,10 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                {
-                    cidade.CidadeId = Guid.NewGuid();
-                    db.Cidades.Add(cidade);
-                    await db.SaveChangesAsync();
-                    return RedirectToAction("Index");
-                }
+                cidade.CidadeId = Guid.NewGuid();
+                db.Cidades.Add(cidade);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
 
             return View(cidade);

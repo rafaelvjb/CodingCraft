@@ -40,12 +40,18 @@ namespace CodingCraftHOMod1Ex1EF.Models
 
         //Propriedade para tratamento de lista BCI
         [NotMapped]
-        public bool ItemDeleted{ get; set; }
+        public bool ItemDeleted { get; set; }
 
 
         public override string ToString()
         {
             return $"({Ddd}) {Numero} ";
+        }
+
+        public override int GetHashCode()
+        {
+            //base.GetHashCode()
+            return Referencia.GetHashCode() + CondominioId.GetHashCode();
         }
     }
 }

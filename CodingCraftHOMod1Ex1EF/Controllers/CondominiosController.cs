@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -122,7 +123,17 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
             {
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    //condominio.CondominioId = Guid.NewGuid();
+                    Expression<Func<CondominioTelefone, bool>> telefonesDeletadosFiltro = tel => tel.CondominioId == condominio.CondominioId;
+                    var telefonesDeletados = await db.CondominioTelefones.AsNoTracking()
+                        .Where(telefonesDeletadosFiltro).ToListAsync();
+                    telefonesDeletados = telefonesDeletados.Where(tel =>
+                        condominio.CondominioTelefones.All(t => t.CondominioTelefoneId != tel.CondominioTelefoneId)).ToList();
+
+                    foreach (var telefone in telefonesDeletados)
+                    {
+                        db.Entry(telefone).State = EntityState.Deleted;
+                    }
+
                     condominio.CondominioTelefones.ForEach(t =>
                     {
                         if (string.IsNullOrEmpty(t.CondominioId.ToString()) || t.CondominioId == default(Guid))
@@ -130,16 +141,9 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
                             t.CondominioId = condominio.CondominioId;
                             db.Entry(t).State = EntityState.Added;
                         }
-                        else
+                        else 
                         {
-                            if (t.ItemDeleted)
-                            {
-                                db.Entry(t).State = EntityState.Deleted;
-                            }
-                            else
-                            {
-                                db.Entry(t).State = EntityState.Modified;
-                            }
+                            db.Entry(t).State = EntityState.Modified;
                         }
                     });
                     db.Entry(condominio).State = EntityState.Modified;
@@ -154,6 +158,8 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
             ViewBag.CidadeId = new SelectList(db.Cidades, "CidadeId", "Nome", condominio.CidadeId);
             return View(condominio);
         }
+
+       
 
         // GET: Condominios/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
