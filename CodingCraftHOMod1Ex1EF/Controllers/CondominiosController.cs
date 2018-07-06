@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using System.Web.Mvc;
 using CodingCraftHOMod1Ex1EF.Models;
+using CodingCraftHOMod1Ex1EF.ViewModels;
 using WebGrease.Css.Extensions;
 
 namespace CodingCraftHOMod1Ex1EF.Controllers
@@ -17,7 +18,7 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
         private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Condominios
-        public async Task<ActionResult> Index(Condominio filtrosCondominio)
+        public async Task<ActionResult> Index(CondominioVM filtrosCondominio)
         {
             var condominios = db.Condominios.Include(c => c.Cidade)
                                             .Include(c => c.CondominioTelefones);
@@ -54,10 +55,11 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
                 .ThenBy(condominio => condominio.Nome)
                 .ToListAsync();
 
+            filtrosCondominio.Result = model;
 
             ViewBag.CidadeId = new SelectList(db.Cidades.Select(cidade => new {cidade.CidadeId, cidade.Nome}),
                 "CidadeId", "Nome");
-            return View(model);
+            return View(filtrosCondominio);
         }
 
         // GET: Condominios/Details/5

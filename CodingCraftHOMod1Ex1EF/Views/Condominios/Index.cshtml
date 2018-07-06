@@ -1,6 +1,7 @@
 ﻿@using CodingCraftHOMod1Ex1EF.Models
+@using CodingCraftHOMod1Ex1EF.ViewModels
 @using Microsoft.Ajax.Utilities
-@model IEnumerable<Condominio>
+@model CondominioVM
 
 @{
     ViewBag.Title = "Index";
@@ -10,7 +11,7 @@
 
 
 
-@Html.Partial("_Filtros", new Condominio())
+@Html.Partial("_Filtros", Model)
 
 
 <p>
@@ -21,27 +22,27 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Cidade)
+            Cidade
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Nome)
+            Nome
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Descricao)
+            Descrição
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RazaoSocial)
+            Razão Social
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Cnpj)
+            Cnpj
         </th>
         <th>
-            <span>Telefones</span>
+            Telefones
         </th>
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Result)
     {
     <tr>
         <td>
