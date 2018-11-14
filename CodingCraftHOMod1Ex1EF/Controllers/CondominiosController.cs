@@ -18,7 +18,7 @@ namespace CodingCraftHOMod1Ex1EF.Controllers
         private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Condominios
-        public async Task<ActionResult> Index(CondominioVM filtrosCondominio)
+        public async Task<ActionResult> Index( CondominioVM filtrosCondominio)
         {
             var condominios = db.Condominios.Include(c => c.Cidade)
                                             .Include(c => c.CondominioTelefones);
